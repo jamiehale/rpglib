@@ -15,7 +15,42 @@
 # You should have received a copy of the GNU General Public License
 # along with RpgLib.  If not, see <http://www.gnu.org/licenses/>.
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'simplecov'
-SimpleCov.start
-require 'rpg_lib'
+require 'set'
+
+module RpgLib
+  ##
+  # RollSet
+  #
+  class RollSet
+    attr_reader :rolls
+
+    def initialize(*args)
+      @rolls = Set.new
+      args.each { |a| add(a) }
+    end
+
+    def empty?
+      @rolls.empty?
+    end
+
+    def include?(roll)
+      @rolls.include?(roll)
+    end
+
+    def add(r)
+      if r.is_a?(Integer)
+        @rolls.add(r)
+      elsif r.is_a?(Range)
+        r.to_a.map { |e| @rolls.add(e) }
+      elsif r.is_a?(RollSet)
+        @rolls.merge(r.rolls)
+      else
+        raise Exception, "Invalid type (#{r.class}) added to roll set"
+      end
+    end
+
+    def to_s
+      @rolls.to_a.join(', ')
+    end
+  end
+end

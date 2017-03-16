@@ -15,7 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with RpgLib.  If not, see <http://www.gnu.org/licenses/>.
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'simplecov'
-SimpleCov.start
-require 'rpg_lib'
+##
+# String Patch
+#
+class String
+  def roll
+    RpgLib::DiceRoller.instance.roll(self)
+  end
+
+  def roll_and_ignore(*args)
+    RpgLib::DiceRoller.instance.roll_and_ignore(self, RpgLib::RollSet.new(*args))
+  end
+end
