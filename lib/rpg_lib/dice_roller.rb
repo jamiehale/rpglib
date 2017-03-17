@@ -24,6 +24,7 @@ module RpgLib
   class DiceRoller
     include Singleton
 
+    attr_reader :parser
     attr_accessor :roller
 
     def initialize
