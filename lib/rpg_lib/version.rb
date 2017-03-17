@@ -16,5 +16,5 @@
 # along with RpgLib.  If not, see <http://www.gnu.org/licenses/>.
 
 module RpgLib
-  VERSION = '1.0.0'.freeze
+  VERSION = '1.0.1'.freeze
 end
