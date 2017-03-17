@@ -1,0 +1,93 @@
+module RpgLib
+  module Parser
+    grammar DiceExpression
+      rule additive
+        head:multitive
+        tail:(
+          space operator:additive_op
+          space operand:multitive)* <BinaryOperation>
+      end
+
+      rule additive_op
+        '+' {
+          def apply(a, b)
+            a + b
+          end
+        }
+        /
+        '-' {
+          def apply(a, b)
+            a - b
+          end
+        }
+      end
+
+      rule multitive
+        head:primary
+        tail:(
+          space operator:multitive_op
+          space operand:primary)* <BinaryOperation>
+      end
+
+      rule multitive_op
+        '*' {
+          def apply(a, b)
+            a * b
+          end
+        }
+        /
+        '/' {
+          def apply(a, b)
+            a / b
+          end
+        }
+      end
+
+      rule primary
+        dice
+        /
+        number
+        /
+        '(' space additive space ')' {
+          def eval(roller)
+            additive.eval(roller)
+          end
+        }
+      end
+
+      rule number
+        ('-'? [1-9] [0-9]* / '0' ) {
+          def eval(_roller)
+            text_value.to_i
+          end
+        }
+      end
+
+      rule positive_integer
+        ([1-9] [0-9]*) {
+          def eval(_roller)
+            text_value.to_i
+          end
+        }
+      end
+
+      rule dice
+        count:positive_integer? 'd' sides:positive_integer {
+          def eval(roller)
+            die_count = count.empty? ? 1 : count.eval(nil)
+            die_sides = sides.eval(nil)
+            rolls = []
+            die_count.times do
+              rolls << roller.roll(die_sides)
+            end
+            rolls.inject(&:+)
+          end
+        }
+      end
+
+      rule space
+        ' '*
+      end
+    end
+  end
+end

@@ -17,7 +17,12 @@
 
 require 'rpg_lib/version'
 require 'rpg_lib/roll_set'
-require 'rpg_lib/roll_descriptor'
+require 'rpg_lib/die_roller'
 require 'rpg_lib/dice_roller'
 require 'rpg_lib/string'
 require 'rpg_lib/api'
+
+require 'treetop'
+require 'rpg_lib/parser/dice_expression_nodes.rb'
+require 'rpg_lib/parser/dice_expression_parser.rb'
+require 'rpg_lib/parser/dice_parser.rb'

@@ -26,3 +26,7 @@ task default: :spec
 task :rubocop do
   sh 'bundle exec rubocop'
 end
+
+task :treetop do
+  sh 'tt --force --output lib/rpg_lib/parser/dice_expression_parser.rb grammar/dice_expression.treetop'
+end

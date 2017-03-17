@@ -18,65 +18,47 @@
 require 'singleton'
 
 module RpgLib
+
   ##
   # DiceRoller
   #
   class DiceRoller
     include Singleton
 
-    DICE_REGEXP = /(\d*)d(\d+)((dl)(\d*)|(dh)(\d*))?/
+    attr_accessor :roller
 
-    def random_value_in_range(range)
-      rand(range)
+    def initialize
+      @roller = DieRoller.new
+      @parser = Parser::DiceParser.new
+      @cache = {}
     end
 
-    def roll_dice(roll_descriptor)
-      rolled_values = roll_all_dice_from_descriptor(roll_descriptor)
-      drop_lowest(rolled_values, roll_descriptor)
-      drop_highest(rolled_values, roll_descriptor)
-      total(rolled_values)
+    def roll_die(n)
+      @roller.roll(n)
     end
 
     def roll(dice)
-      local_dice = dice.dup
-      loop do
-        m = local_dice.downcase.match(DICE_REGEXP)
-        break if m.nil?
-        rolled_value = roll_dice(RollDescriptor.new(m))
-        local_dice[m.begin(0)...m.end(0)] = rolled_value.to_s
-      end
-      eval(local_dice)
+      expression = expression_from_dice(dice)
+      expression.eval(@roller)
     end
 
     def roll_and_ignore(dice, ignored_values)
-      rolled_value = nil
       loop do
         rolled_value = roll(dice)
-        break unless ignored_values.include?(rolled_value)
+        return rolled_value unless ignored_values.include?(rolled_value)
       end
-      rolled_value
     end
 
     private
 
-    def roll_all_dice_from_descriptor(roll_descriptor)
-      rolled_values = []
-      1.upto roll_descriptor.count do
-        rolled_values << random_value_in_range(1..roll_descriptor.die)
-      end
-      rolled_values.sort
+    def expression_from_dice(dice)
+      cache_new_expression(dice)
+      @cache[dice]
     end
 
-    def drop_lowest(rolled_values, roll_descriptor)
-      rolled_values.slice!(0, roll_descriptor.drop_lowest)
-    end
-
-    def drop_highest(rolled_values, roll_descriptor)
-      rolled_values.slice!(rolled_values.size - roll_descriptor.drop_highest, roll_descriptor.drop_highest)
-    end
-
-    def total(rolled_values)
-      rolled_values.inject(:+)
+    def cache_new_expression(dice)
+      return if @cache.key?(dice)
+      @cache[dice] = @parser.parse(dice)
     end
   end
 end
