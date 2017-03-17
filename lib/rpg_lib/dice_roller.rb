@@ -18,7 +18,6 @@
 require 'singleton'
 
 module RpgLib
-
   ##
   # DiceRoller
   #
@@ -30,7 +29,6 @@ module RpgLib
     def initialize
       @roller = DieRoller.new
       @parser = Parser::DiceParser.new
-      @cache = {}
     end
 
     def roll_die(n)
@@ -38,8 +36,7 @@ module RpgLib
     end
 
     def roll(dice)
-      expression = expression_from_dice(dice)
-      expression.eval(@roller)
+      @parser.parse(dice).eval(@roller)
     end
 
     def roll_and_ignore(dice, ignored_values)
@@ -47,18 +44,6 @@ module RpgLib
         rolled_value = roll(dice)
         return rolled_value unless ignored_values.include?(rolled_value)
       end
-    end
-
-    private
-
-    def expression_from_dice(dice)
-      cache_new_expression(dice)
-      @cache[dice]
-    end
-
-    def cache_new_expression(dice)
-      return if @cache.key?(dice)
-      @cache[dice] = @parser.parse(dice)
     end
   end
 end
