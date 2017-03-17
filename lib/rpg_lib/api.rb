@@ -25,7 +25,7 @@ module RpgLib
     end
 
     def roll_and_ignore(dice, *args)
-      DiceRoller.instance.roll_and_ignore(dice, *args)
+      DiceRoller.instance.roll_and_ignore(dice, RollSet.new(*args))
     end
 
     def choose(options)
