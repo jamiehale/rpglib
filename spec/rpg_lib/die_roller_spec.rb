@@ -26,4 +26,3 @@ module RpgLib
     end
   end
 end
-

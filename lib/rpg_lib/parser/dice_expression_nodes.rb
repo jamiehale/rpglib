@@ -1,6 +1,9 @@
 module RpgLib
   module Parser
     module DiceExpression
+      ##
+      # BinaryOperation
+      #
       class BinaryOperation < Treetop::Runtime::SyntaxNode
         def eval(roller)
           tail.elements.inject(head.eval(roller)) do |value, element|

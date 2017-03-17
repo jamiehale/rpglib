@@ -16,6 +16,9 @@
 # along with RpgLib.  If not, see <http://www.gnu.org/licenses/>.
 
 module RpgLib
+  ##
+  # Api
+  #
   module Api
     def roll(dice)
       DiceRoller.instance.roll(dice)

@@ -1,3 +1,7 @@
+AllCops:
+    Exclude:
+        - 'lib/rpg_lib/parser/dice_expression_parser.rb'
+
 Metrics/LineLength:
     Enabled: false
 Metrics/ModuleLength:
