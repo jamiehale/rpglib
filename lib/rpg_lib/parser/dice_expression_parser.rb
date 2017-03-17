@@ -3,6 +3,7 @@
 
 module RpgLib
   module Parser
+    # :nocov:
     module DiceExpression
       include Treetop::Runtime
 
@@ -671,5 +672,6 @@ module RpgLib
       include DiceExpression
     end
 
+    # :nocov:
   end
 end

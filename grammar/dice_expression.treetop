@@ -1,5 +1,6 @@
 module RpgLib
   module Parser
+    # :nocov:
     grammar DiceExpression
       rule additive
         head:multitive
@@ -89,5 +90,6 @@ module RpgLib
         ' '*
       end
     end
+    # :nocov:
   end
 end
