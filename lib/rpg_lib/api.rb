@@ -29,7 +29,7 @@ module RpgLib
     end
 
     def choose(options)
-      options[DiceRoller.instance.random_value_in_range(1..options.size) - 1]
+      options[DiceRoller.instance.roll_die(options.size) - 1]
     end
   end
 end
