@@ -4,6 +4,8 @@ module RpgLib
     # DiceParser
     #
     class DiceParser
+      attr_reader :parser
+
       def initialize
         @parser = DiceExpressionParser.new
         @cache = {}
