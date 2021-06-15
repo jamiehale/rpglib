@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
   spec.add_dependency 'treetop', '~> 1.6'
-  spec.add_development_dependency 'bundler', '~> 1.14'
+  spec.add_development_dependency 'bundler', '>= 2.2.10'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.5'
   spec.add_development_dependency 'simplecov', '~> 0.13'
